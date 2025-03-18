@@ -21,8 +21,8 @@ char pass[] = "YOUR WIFI'S PASSWORD";  // Replace with your WiFi password
 // Thresholds for notifications
 #define TEMP_THRESHOLD 32.0  
 #define HUMIDITY_THRESHOLD 80.0 
-#define RAIN_THRESHOLD 700  
-#define PRESSURE_THRESHOLD 1050.00  
+#define RAIN_THRESHOLD 500  
+#define PRESSURE_THRESHOLD 1013.00  
 
 void setup() {
   Serial.begin(9600); 
