@@ -1,6 +1,6 @@
-**IOT WEATHER STATION**
+# IOT WEATHER STATION
 
-**Members:**
+## Members:
 | # | Student ID | Student Name        |
 |---|------------|---------------------|
 | 1 | SE184005   | Tran Dinh Son       |
