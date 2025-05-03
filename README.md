@@ -11,8 +11,16 @@
 ## Circuits:
 <details>
   <summary>Schematic View</summary>
-  <img src="images/Weather_Station_ESP.jpg" alt="ESP8266">
-  <img src="images/Weather_Station_Arduino.jpg" alt="Arduino">
+  <figure>
+    <img src="images/Weather_Station_ESP.jpg" alt="ESP8266">
+    <figcaption>ESP8266</figcaption>
+  </figure>
+  <br>
+  <figure>
+    <img src="images/Weather_Station_Arduino.jpg" alt="Arduino">
+    <figcaption>Arduino</figcaption>
+  </figure>
+  
 </details>
 
 
