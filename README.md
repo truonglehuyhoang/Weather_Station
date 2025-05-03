@@ -10,7 +10,7 @@
 
 ## Circuits:
 <details>
-  <summary>Schematic View</summary>
+  <summary>Design View</summary>
   <figure>
     <img src="images/Weather_Station_ESP.jpg" alt="ESP8266">
     <figcaption>ESP8266</figcaption>
@@ -22,6 +22,14 @@
     <img src="images/Weather_Station_Arduino.jpg" alt="Arduino">
     <figcaption>Arduino</figcaption>
   </figure>
+</details>
+
+<details>
+  <summary>Final Product</summary>
+  <firgure>
+    <img src="images/Weather_Station_System.jpg" alt="IOT Weather Station">
+    <figcaption>IOT Weather Station</figcaption>
+  </firgure>
 </details>
 
 
