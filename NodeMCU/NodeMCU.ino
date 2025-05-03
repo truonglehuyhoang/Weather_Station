@@ -24,9 +24,30 @@ char pass[] = "YOUR WIFI'S PASSWORD";  // Replace with your WiFi password
 #define RAIN_THRESHOLD 500  
 #define PRESSURE_THRESHOLD 1013.00  
 
+// Timeout settings for detecting Arduino disconnection
+const unsigned long ARDUINO_TIMEOUT = 10000;  // 10 seconds
+
+// Global variable to track the last time a LoRa packet was received
+unsigned long lastLoRaReceived = 0;
+
+// Flag to avoid duplicate Arduino disconnection alerts
+bool arduinoAlertSent = false;
+
+// Interval for checking connection status (ms)
+const unsigned long CHECK_INTERVAL = 5000;
+
+// Blynk timer for periodic checks
+BlynkTimer timer;
+
 void setup() {
   Serial.begin(9600); 
   Blynk.begin(auth, ssid, pass); 
+
+  // Record current time as the last LoRa reception time
+  lastLoRaReceived = millis();
+  
+  // Set up a periodic check for Arduino disconnection every 5 seconds
+  timer.setInterval(CHECK_INTERVAL, checkConnections);
 
   if (Blynk.connected()) {
     Serial.println("Connected to Blynk!");
@@ -37,6 +58,7 @@ void setup() {
   // Initialize LoRa
   SPI.begin();
   LoRa.setPins(LORA_SS, LORA_RST, LORA_DIO0);
+  delay(500);
   if (!LoRa.begin(433E6)) { 
     Serial.println("LoRa initialization failed!");
     while (1);
@@ -46,6 +68,7 @@ void setup() {
 
 void loop() {
   Blynk.run(); 
+  timer.run();
 
   int packetSize = LoRa.parsePacket();
   if (packetSize) {
@@ -56,6 +79,10 @@ void loop() {
     }
     
     Serial.println("Received LoRa data: " + receivedData);
+
+    // Update the last received time and reset alert flag
+    lastLoRaReceived = millis();  // Critical fix: Update timestamp here
+    arduinoAlertSent = false;     // Reset alert flag on new data
 
     int commaIndex1 = receivedData.indexOf(',');
     int commaIndex2 = receivedData.indexOf(',', commaIndex1 + 1);
@@ -92,6 +119,30 @@ void loop() {
     if (pressure > PRESSURE_THRESHOLD) {
       Serial.println("Warning: High Pressure Detected! " + String(pressure) + " hPa");
       Blynk.logEvent("high_pressure", "Warning: High Pressure Detected! " + String(pressure) + " hPa");
+    }
+  }
+}
+
+// Periodic function to check if the Arduino transmitter is disconnected
+void checkConnections() {
+  unsigned long now = millis();
+
+  if (now - lastLoRaReceived > ARDUINO_TIMEOUT) {
+    if (!arduinoAlertSent) {
+      Serial.println("Alert: No LoRa packet received from Arduino in the last 10 seconds!");
+      Blynk.logEvent("arduino_disconnect", "No LoRa packet received for over 10 seconds.");
+      
+      // Attempt to reinitialize the LoRa module
+      LoRa.end();
+      delay(100);  // Short pause to allow cleanup
+      if (LoRa.begin(433E6)) {
+        Serial.println("LoRa reinitialized successfully.");
+        lastLoRaReceived = millis();  // Reset the timer after reinitialization
+      } else {
+        Serial.println("Failed to reinitialize LoRa.");
+      }
+      
+      arduinoAlertSent = true;  // Prevent duplicate alerts
     }
   }
 }

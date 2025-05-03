@@ -45,15 +45,15 @@ void loop() {
     return; // Skip this iteration of the loop
   }
 
-  if (isnan(p)) {
-    Serial.println("Failed to read from BMP180 sensor!");
-    return; // Skip this iteration of the loop
-  }
+ if (p < 300.0 || p > 1100.0) {  
+  Serial.println("Failed to read from BMP180 sensor!");
+  return;
+}
 
-  if (isnan(rain)) {
+ if (rain == 0) {  // Adjust threshold based on sensor behavior
     Serial.println("Failed to read from Rain sensor!");
-    return; // Skip this iteration of the loop
-  }
+    return;
+ }
 
   // Send sensor data via LoRa
   LoRa.beginPacket();
