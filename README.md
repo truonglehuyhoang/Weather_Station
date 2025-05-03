@@ -12,15 +12,14 @@
 <details>
   <summary>Schematic View</summary>
   <figure>
-    <img src="images/Weather_Station_ESP.jpg" alt="ESP8266">
+    <img src="images/Weather_Station_ESP.jpg" alt="ESP8266" width="300" height="200">
     <figcaption>ESP8266</figcaption>
   </figure>
   <br>
   <figure>
-    <img src="images/Weather_Station_Arduino.jpg" alt="Arduino">
+    <img src="images/Weather_Station_Arduino.jpg" alt="Arduino" width="300" height="200">
     <figcaption>Arduino</figcaption>
   </figure>
-  
 </details>
 
 
